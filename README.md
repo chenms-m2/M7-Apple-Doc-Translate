@@ -34,5 +34,5 @@
 
 
 #### UI
-- [【译】View Controller 编程指南（一、概述)](doc/【译】View Controller 编程指南（一、概述)）.md)
+- [【译】View Controller 编程指南（一、概述)](doc/【译】View Controller 编程指南（一、概述）.md)
 
