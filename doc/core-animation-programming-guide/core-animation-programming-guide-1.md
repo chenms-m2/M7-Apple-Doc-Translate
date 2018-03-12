@@ -13,7 +13,7 @@ layer对象是3D空间中的2D面，是CA的核心对象。和view类似，layer
 
 ##### 基于layer的绘制模型
 大多数layer不会执行实际的绘制，相反，layer接受app提供的内容，并缓存为位图，这个位图有时被称作backing store。当后续你修改layer的属性时，实际上只改变了layer的维护的状态信息。当变化触发动画时，CA将位图和状态信息传递给图形硬件，硬件会使用新的信息渲染位图，如图1-1所示。硬件处理位图执行动画，要比软件快的多。
-![图1-1 CA如何绘制内容](image/basics_layer_rendering_2x.png)
+![图1-1 CA如何绘制内容](image/1/basics_layer_rendering_2x.png)
 
 这种操作静态位图的方式，使得基于layer的绘制和传统的基于view的方式显著的不同。基于view的绘制方式中，改变view的属性，通常会导致view执行drawRect方法，来根据新参数重新绘制内容。这种绘制方式开销很大，因为它要在主线程使用CPU绘制。CA尽可能的使用硬件操作缓冲位图的方式，在降低开销的情况下达到同样的效果。
 
@@ -22,7 +22,7 @@ layer对象是3D空间中的2D面，是CA的核心对象。和view类似，layer
 ##### 基于layer的动画
 layer对象的数据和状态信息，与visual presentation of that layer’s content onscreen解耦了。这种解耦让CA可以为自己插值【interpose itself】，并且动画式的执行从旧值到新值的变化。例如，改变layer的position的值，CA会将layer从旧位置移动到新指定的位置。其他可动画的属性也是类似的。图1-2展示了几种layer可以执行的动画。完整的可动画属性列表，请参考[Animatable Properties]()章节。
 
-![图1-2 layer执行动画的示例](image/basics_animation_types_2x.png)
+![图1-2 layer执行动画的示例](image/1/basics_animation_types_2x.png)
 
 在动画过程中，CA使用硬件绘制每一帧。你所需要做的仅仅是设置初始值和结束值，其余的CA来做。你可以设置动画时间等属性；如果你没设置的话，CA也有合适的默认值。
 
@@ -39,13 +39,13 @@ layer使用两种坐标系统，一种是基于点的坐标系统，一种是单
 
 layer的bounds和frame的方向和底层平台有关。图1-3展示了iOS和OSX平台上的默认方向。iOS系统的坐标系原点在左上方，而OSX的坐标系原点在左下方。如果你的代码要在iOS和OSX上共享，要考虑到这个不同。
 
-![图1-3 iOS/OSX上默认的layer geometries](image/layer_coords_bounds_2x.png)
+![图1-3 iOS/OSX上默认的layer geometries](image/1/layer_coords_bounds_2x.png)
 
 图1-3中要注意的是图中心的position属性，这是几个受anchorPoint属性影响的属性之一。The anchor point represents the point from which certain coordinates originate，详情请参考[Anchor Points Affect Geometric Manipulations]()章节。
 
 anchorPoint是使用单位坐标系统的属性之一，CA使用单位坐标系统来表示哪些可能随layer尺寸变化而改变的属性。你可以认为单位坐标系统是使用百分比值的系统，每个坐标的x或y值都在0到1之间。例如，在x轴上，最左边的坐标是0，最右边的坐标是1。y轴的值，和底层平台有关，如图1-4所示。
 
-![图1-4 iOS/OSX的默认单位坐标系统](image/layer_coords_unit_2x.png)
+![图1-4 iOS/OSX的默认单位坐标系统](image/1/layer_coords_unit_2x.png)
 
 > **注意**：Until OS X 10.8, the geometryFlipped property was a way to change the default orientation of a layer’s y-axis when needed. Use of this property was sometimes necessary to correct the orientation of a layer when flip transforms were in involved. For example, if a parent view used a flip transform, the contents of its child views (and their corresponding layers) would often be inverted. In such cases, setting the geometryFlipped property of the child layers to YES was an easy way to correct the problem. In OS X 10.8 and later, AppKit manages this property for you and you should not modify it. For iOS apps, it is recommended that you do not use the geometryFlipped property at all.
 
@@ -56,22 +56,22 @@ Geometry related manipulations of a layer occur relative to that layer’s ancho
 
 图1-5展示了修改anchorPoint的值会如何影响position，尽管没有移动在父layer的bounds中移动layer，将layer的anchorPoint从layer的中心修改到layer的原点时，依然改变了layer的position的值。
 
-![图1-5 anchorPoint如何影响position](image/layer_coords_anchorpoint_position_2x.png)
+![图1-5 anchorPoint如何影响position](image/1/layer_coords_anchorpoint_position_2x.png)
 
 图1-6展示了改变anchorPoint的值会如何影响layer的transform。当你对layer应用rotation时，layer会围绕anchorPoint旋转。anchorPoint默认为layer的中心，此时旋转的效果和你预期是一样的。然而当你修改了anchorPoint，旋转的效果就变化了。
 
-![图1-6 anchorPoint如何影响transform](image/layer_coords_anchorpoint_transform_2x.png)
+![图1-6 anchorPoint如何影响transform](image/1/layer_coords_anchorpoint_transform_2x.png)
 
 ##### Layers Can Be Manipulated in Three Dimensions
 每个layer都有两个变化矩阵来处理它和它的内容。transform属性适用于你想将transform应用于layer以及它的子layer。通常你想修改layer时会使用这个属性，例如你想临时的旋转、缩放或调整layer的位置。sublayerTransform属性则只应用于layer的子属性and is used most commonly to add a perspective visual effect to the contents of a scene。
 
 Transforms work by multiplying coordinate values through a matrix of numbers to get new coordinates that represent the transformed versions of the original points. Because Core Animation values can be specified in three dimensions, each coordinate point has four values that must be multiplied through a four-by-four matrix, as shown in Figure 1-7. In Core Animation, the transform in the figure is represented by the CATransform3D type. Fortunately, you do not have to modify the fields of this structure directly to perform standard transformations. Core Animation provides a comprehensive set of functions for creating scale, translation, and rotation matrices and for doing matrix comparisons. In addition to manipulating transforms using functions, Core Animation extends key-value coding support to allow you to modify a transform using key paths. For a list of key paths you can modify, see [CATransform3D Key Paths](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/Key-ValueCodingExtensions/Key-ValueCodingExtensions.html#//apple_ref/doc/uid/TP40004514-CH12-SW1)
 
-![Figure 1-7  Converting a coordinate using matrix math](image/transform_basic_math_2x.png)
+![Figure 1-7  Converting a coordinate using matrix math](image/1/transform_basic_math_2x.png)
 
 Figure 1-8 shows the matrix configurations for some of the more common transformations you can make. Multiplying any coordinate by the identity transform returns the exact same coordinate. For other transformations, how the coordinate is modified depends entirely on which matrix components you change. For example, to translate along the x-axis only, you would supply a nonzero value for the tx component of the translation matrix and leave the ty and tz values to 0. For rotations, you would provide the appropriate sine and cosine values of the target rotation angle.
 
-![Figure 1-8  Matrix configurations for common transformations](image/transform_manipulations_2x.png)
+![Figure 1-8  Matrix configurations for common transformations](image/1/transform_manipulations_2x.png)
 
 ### layer树们从不同层面反映动画状态
 
@@ -83,11 +83,11 @@ app使用CA时会有3个layer树，内容要在屏幕上显示时，3个layer树
 
 每个layer树都和view树结构类似，事实上，如果view树的每个view都开启了layer支持，那么layer树的初始结构和view树是一致的，但是你可以在layer树上添加额外的layer。你通常在需要优化app性能时，对那些不需要view的额外属性的内容使用layer。
 
-![图1-9 window相关的layers](image/sublayer_hierarchy_2x.png)
+![图1-9 window相关的layers](image/1/sublayer_hierarchy_2x.png)
 
 对于layer tree的每个对象，presentation tree和render tree中都有一个对象的对象，如图1-10所示。之前提到过，app主要和layer tree交互，有时通过访问layer tree上某个对象的presentationLayer属性和presentation tree交互。访问presentation tree通常是为了读取动画执行过程中的属性值。
 
-![图1-10 window的layer树们](image/sublayer_hierarchies_2x.png)
+![图1-10 window的layer树们](image/1/sublayer_hierarchies_2x.png)
 
 > **重要**：你应该只在动画执行时访问presentation tree，动画执行时，presentation tree包含了动画在屏幕上的当前值。这个行为和layer tree是不同的，layer tree反映了你代码最后设置的值，也就是动画的最终值。
 

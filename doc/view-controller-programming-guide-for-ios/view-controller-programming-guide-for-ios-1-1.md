@@ -11,6 +11,7 @@
 容器和内容ViewController是类似的，都是管理根View和内容。它们的区别在于，容器会使用其他ViewController的根view作为自己内容的一部分。容器只能取ViewController的根view作为内容，将它们嵌入自己的view树。容器会调整嵌入的根view的位置和尺寸，但根view上的view树还是由其所属的ViewController自己管理。
 
 设计自己的容器时，要理解容器和被包含的ViewController的关系。ViewController间的关系可以体现出，它们的内容如何出现在屏幕上，以及容器内部如何管理他们。设计过程中，要问下自己以下问题：
+
 - 容器和子ViewController各自的角色是什么？
 - 有多少子ViewController会同时进行展示？
 - 兄弟ViewController间有关系吗，如果有的话是什么关系？
@@ -28,7 +29,7 @@ ViewController间的导航由UINavigationController和子ViewController共同管
 图5-1展示了UINavigationController和它的view们的结构。子ViewController的内容占据了大部分区域，小部分区域留给导航栏。
 
 图5-1 导航界面的结构
-![](_image/【译】View Controller 编程指南（二·二、定义ViewController之实现容器ViewController）/VCPG_structure-of-navigation-interface_5-1_2x.png)
+![](image/1-1/VCPG_structure-of-navigation-interface_5-1_2x.png)
 
 不管是紧凑型布局还是常规型布局，UINavigationController在同一时间，都只展示一个子ViewController。UINavigationController会根据当前的空间来调整子ViewController的尺寸。
 
@@ -37,14 +38,14 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
 图5-2展示了UISplitViewController在常规水平环境中的情况。UISplitViewController本身只有容器view。本例中，两个子ViewController并排的显示。这些子ViewController的view尺寸是可以配置的，本例中保持主view【as is the visibility of the master view】。
 
 图5-2 UISplitViewController
-![](_image/【译】View Controller 编程指南（二·二、定义ViewController之实现容器ViewController）/VCPG-split-view-inerface_5-2_2x.png)
+![](image/1-1/VCPG-split-view-inerface_5-2_2x.png)
 
 #### 在IB（Interface Builder）中配置容器
 如果想在设计阶段创建ViewController的父子关系，可以在storyboard中添加container view，如图5-3所示。container view是子ViewController内容的占位对象，使用它可以调整子ViewController的根view的尺寸和位置。
 
 图5-3 在IB中添加container view。
 
-![](_image/【译】View Controller 编程指南（二·二、定义ViewController之实现容器ViewController）/container_view_embed_2x.png)
+![](image/1-1/container_view_embed_2x.png)
 
 当你加载包含container view的ViewController时，IB也会加载和这些container view相关的子ViewController。子ViewController和父view应该同时实例化，以便于建立父子关系。
 
@@ -55,6 +56,7 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
 
 ##### 向内容中添加子ViewController
 想通过代码将子ViewController加入容器ViewController的内容中，你需要按下面的步骤建立父子关系：
+
 1. 调用容器ViewController的addChildViewController:方法。这个方法告诉UIKit你的容器ViewController要管理子ViewController的view。
 2. 将子ViewController的根view加入容器ViewController的view树。这一步中，要记得设置子ViewController根view的尺寸和位置。
 3. 为子ViewController的根view添加必要的约束。
@@ -63,6 +65,7 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
 代码清单5-1展示了容器如何将子ViewController嵌入自己。建立父子关系后，容器设置子ViewController的根view的frame，并将其加入自己的view树。设置frame是重要的，可以保证子ViewController的根view能在容器中正确的展示。添加完view后，调用子ViewController的didMoveToParentViewController:来给它一个机会来响应view所属关系的变化。
 
 代码清单5-1 将子ViewController加入容器
+
 ```
 - (void) displayContentController: (UIViewController*) content {
    [self addChildViewController:content];
@@ -71,12 +74,14 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
    [content didMoveToParentViewController:self];
 }
 ```
+
 注意到上面的示例中，你仅仅调用了子ViewController的didMoveToParentViewController方法。因为容器的addChildViewController: 方法会自动调用子ViewController的willMoveToParentViewController:。而子ViewController的根view什么时候加入容器由你决定，所以加入容器后，由你来调用didMoveToParentViewController。
 
 如果使用自动布局，在子ViewController的根view加入容器后，再添加相关的约束。你添加的约束只能约束子ViewController的根view的尺寸和位置，不能去操作它内部的view树。
 
 ##### 移除子ViewController
 想要移除子ViewController，按照下面步骤解除父子关系：
+
 1. 调用子ViewController的willMoveToParentViewController:方法，并传nil。
 2. 移除掉你在子ViewController的根view上添加的约束。
 3. 从容器中移除子ViewController的根view。
@@ -87,6 +92,7 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
 代码清单5-2展示了如何从容器中移除子ViewController。调用子ViewController的willMoveToParentViewController方法（传nil值），给了它处理变化的机会。removeFromParentViewController方法会调用子ViewController的didMoveToParentViewController:（传nil值），将子ViewController的父ViewController属性设置为nil，并将它从容器移除。
 
 代码清单5-2 将子ViewController从容器中移除
+
 ```
 - (void) hideContentController: (UIViewController*) content {
    [content willMoveToParentViewController:nil];
@@ -101,6 +107,7 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
 代码清单5-3展示了如何使用转场动画切换两个子ViewController。实例中，新的ViewController的根view会移动到旧的ViewController的根view的位置，旧的则会移出屏幕。动画结束后，执行子ViewController相关操作。示例中，transitionFromViewController:toViewController:duration:options:animations:completion: 方法会自动更新容器的view树，因此你不需要添加或移除view。
 
 代码清单5-3 子ViewController转场
+
 ```
 - (void)cycleFromViewController: (UIViewController*) oldVC
                toViewController: (UIViewController*) newVC {
@@ -128,20 +135,24 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
            [newVC didMoveToParentViewController:self];
         }];
 ```
+
 ##### 管理子ViewController的外观更新
 将子ViewController添加到容器后，容器自动向子ViewController转发出现消失（willAppear等）的通知。这通常都是我们想要的，因为这样可以确保相关事件被恰当的传递。但有些场景下，默认行为不能满足我们。例如，多个子ViewController同时改变状态，你可能需要它们合并【changes】这些变化，让它们的回调更加有序。
 
 为了接管出现消失的回调，你需要重写容器的shouldAutomaticallyForwardAppearanceMethods方法，让其返回NO。如代码清单5-4所示。返回NO告诉了UIKit，你的容器会自己将出现消失通知专递给子ViewController。
 
 代码清单5-4 禁用自动出现消失通知转发
+
 ```
 - (BOOL) shouldAutomaticallyForwardAppearanceMethods {
     return NO;
 }
 ```
+
 当出现通知产生时，调用子ViewController的beginAppearanceTransition:animated:或endAppearanceTransition方法。例如，你的容器有一个子ViewController，被属性child引用，你可以按5-5的代码向它转发通知：
 
 代码清单5-5 手动向子ViewController转发出现消失通知
+
 ```
 -(void) viewWillAppear:(BOOL)animated {
     [self.child beginAppearanceTransition: YES animated: animated];
@@ -159,14 +170,17 @@ UISplitViewController会展示两个ViewController的方式，采用主从【mas
     [self.child endAppearanceTransition];
 }
 ```
+
 #### 构建容器ViewController的建议
 设置、开发及测试新的容器ViewController都要消耗时间。尽管单个行为很简单，但ViewController整体还是很复杂的。实现自己的容器时，考虑下面的建议：
+
 - 只访问子ViewController的根view。容器应该只访问子ViewController的根view（即ViewController的self.view返回的view）。不要访问子ViewController内部的其他view。
 - 子ViewController应该尽量少的了解容器。子ViewController应该专注于自己的内容。如果容器允许子ViewController影响自己，应该使用delegate模式来处理两者的交互。
 - 设计容器的阶段使用常规【regular】view（译注：理解是UIView等占位view）。使用常规view（而不是直接使用子ViewController的根view）能够更简单测试布局和转场。当常规view工作良好时，再替换为子ViewController的根view。
 
 #### 将控制权授权给子ViewController【Delegating Control to a Child View Controller】
 容器可以将部分外观控制权授权给子ViewController，你可以通过以下方式实现：
+
 - 让子ViewController决定状态栏风格。想要将状态栏外观授权给子ViewController，你需要重写容器的childViewControllerForStatusBarStyle和childViewControllerForStatusBarHidden中的一个，或都重写。
 - 让子ViewController指定自己的尺寸。使用灵活布局的容器，可以通过自ViewController的preferredContentSize属性，来决定子ViewController的尺寸。
 

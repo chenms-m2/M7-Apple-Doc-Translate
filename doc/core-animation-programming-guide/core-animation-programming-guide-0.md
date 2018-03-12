@@ -6,7 +6,7 @@ Core Animation（后文简称CA）是一个iOS/OSX平台上的图形渲染与动
 
 如果你在开发iOS的app的话，虽然你没意识到，但你一直在使用CA。如果你在开发OSX的app，你只需要一点工作就可以使用CA。CA位于AppKit和UIKit的下层，它已经紧密的集成到了Cocoa和Cocoa Touch中view的流程【workflow】中。Core Animation also has interfaces that extend the capabilities exposed by your app’s views and give you more fine-grained control over your app’s animations。
 
-![](image/ca_architecture_2x.png)
+![](image/0/ca_architecture_2x.png)
 
 ### 概览
 你可能不会直接使用CA，如果你要使用的话，要清楚CA在你的app框架【infrastructure】中是什么角色。

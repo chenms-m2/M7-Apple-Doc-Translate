@@ -12,6 +12,7 @@ View controllers 是你的App的内部结构的基础。每个App至少拥有一
 由于View Controller在你的App中扮演如此重要的角色，因此它是你所有开发工作的中心。UIViewController类定义了方法和属性来管理你的view、处理事件、协助view controller间的过渡，并协调与程序其他部分的配合。你可以生成UIViewController的子类（或子类的子类），并添加需要的代码，来实现你的App的行为。
 
 有两种类型的view controllers:
+
 - 内容 view controllers【Content view controller】管理着你的App的一块独立的内容，这也是你最常创建的view controllers类型。
 - 容器 view controllers【Container view controllers】从其他的view controllers（一般被称作child view controllers）中收集信息，以一种更易于导航的方式或以一种不同的展现方式来展现那些view controllers的内容【and present it in a way that facilitates navigation or presents the content of those view controllers differently】。
 大多数的Apps是由这两种view controllers组合而成的。
@@ -20,16 +21,16 @@ View controllers 是你的App的内部结构的基础。每个App至少拥有一
 view controller最重要的角色就是管理一个View树【a hierarchy of views】。每个view controller都有一个根view【root view】，根view包含【encloses】了这个view controller的所有内容。你可以把需要的view添加到根view上来展示你的内容。图1-1展示了view controller 和它的views的内建【build-in】的关系。view controller总是拥有它的根view的一个引用，每个view都拥有它的子views【subviews】的强引用【strong reference】。
 
 图1-1 view controller 和它的views的关系
-![](_image/【译】View Controller 编程指南（一、概述）/23-06-11.jpg)
+![](image/0/23-06-11.jpg)
 
->注意：
+> **注意**：
 使用outlets来访问你的view controller的view树中的其他views是个很常见的实践。view controller管理它所有views的内容，outlets让你持有需要的views的引用。当你的views从storyboard中加载后，outlets会自动的连接到实际的view对象。
 
 内容view controller管理它自己所有的views。而容器view controller管理它自己的views以及它的子view controllers【child view controllers】的views。容器并不会管理它的孩子们的内容，它仅仅管理孩子们的根views，根据容器的设计调整根views的尺寸和位置。图1-2展示了split view controller和它的孩子们的关系。split view controller 管理着子views的尺寸和位置，而子view controller管理那些views的实际内容。
 
 图 1-2 View controllers能管理来自其他view controllers的内容【View controllers can manage content from other view controllers. *这句话是不是有问题？】。
 
-![](_image/【译】View Controller 编程指南（一、概述）/23-23-48.jpg)
+![](image/0/23-23-48.jpg)
 
 关于如何管理你的view controllers的views，请参考后文的管理View布局【Managing View Layout.】一节。
 
@@ -37,7 +38,7 @@ view controller最重要的角色就是管理一个View树【a hierarchy of view
 view controller 在它的views和App的数据之间扮演着中间人的角色。UIViewController类的方法和属性让你可以管理App的可视化展现。当你子类化UIViewController时，你会向子类中添加需要的变量【variables】来管理你的数据。添加自定义的变量创建了图1-3中的关系，view controller持有着你的数据的引用，也持有着展示这些数据的views的引用。在两者之间移动数据是你的职责。
 
 图1-3 view controller 协调【mediates】数据对象【data objects】和views
-![](_image/【译】View Controller 编程指南（一、概述）/22-34-36.jpg)
+![](image/0/22-34-36.jpg)
 
 对于view controllers和数据对象，你应该始终保持清晰的责任划分。大多数确保数据结构完整性的逻辑属于数据对象的职责。view controller可能验证views收集的输入数据，并且将数据打包成数据对象需要的格式，但你应该最小化view controller管理实际数据的职责。
 
@@ -57,7 +58,7 @@ view controller有责任来展示它的views的数据，并且有责任根据底
 
 图1-4 根据size class变化适配views
 
-![](_image/【译】View Controller 编程指南（一、概述）/23-22-39.jpg)
+![](image/0/23-22-39.jpg)
 在一个给定的尺寸类别中，任何时候都可能发生细粒度的变化。当用户将iPhone从竖直旋转到水平时，尺寸类别可能没有变化，不过屏幕尺寸【screen dimensions，个人理解为宽高比】会变化。当你使用自动布局【Auto Layout】时，UIKit会自动的调整views的尺寸和位置来匹配新的屏幕尺寸。view controller也可以根据需要做额外的调整。
 更多的关于自适应性的信息，请参考后文中的“自适应模型【The Adaptive Model】”。
 
@@ -69,7 +70,7 @@ root view controller是view controller树的锚【anchor】。每个window都有
 
 图2-1 root view controller 和 window
 
-![](_image/【译】View Controller 编程指南（一、概述）/23-10-26.jpg)
+![](image/0/23-10-26.jpg)
 
 root view controller可以通过UIWindow对象的rootViewController属性访问。如果你使用storyboard来配置view controllers的话，UIKit会在launch时自动的设置这个属性。如果你使用代码来实现，你必须自己设置root view controller。
 
@@ -80,7 +81,7 @@ root view controller可以通过UIWindow对象的rootViewController属性访问�
 
 图2-2 容器ViewController被用作根ViewController
 
-![](_image/【译】View Controller 编程指南（一、概述）/VCPG-container-acting-as-root-view-controller_2-2_2x.png)
+![](image/0/VCPG-container-acting-as-root-view-controller_2-2_2x.png)
 
 由于容器要管理它的子ViewController，因此，在自定义容器时，如何设置子ViewController，UIKit制定了一些规则。详情请参考[Implementing a Container View Controller](https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/ImplementingaContainerViewController.html#//apple_ref/doc/uid/TP40007457-CH11-SW1)章节。
 
@@ -91,7 +92,7 @@ root view controller可以通过UIWindow对象的rootViewController属性访问�
 
 图2-3 呈现ViewController
 
-![](_image/【译】View Controller 编程指南（一、概述）/VCPG-presented-view-controllers_2-3_2x.png)
+![](image/0/VCPG-presented-view-controllers_2-3_2x.png)
 
 当呈现涉及到容器ViewController时，UIKit可以修改呈现链来简化你的代码。不同的呈现风格有不容的展示规则，例如，一个全屏呈现需要覆盖整个屏幕。当你呈现一个ViewController时，UIKit会寻找一个能提供合适的呈现上下文的ViewController。通常，UIKit会选择最近的容器ViewController，也可能会选额window的根ViewController。有些情况下，你需要告知UIKit哪个UIKit可以提供合适的上下文来处理呈现。
 
@@ -99,7 +100,7 @@ root view controller可以通过UIWindow对象的rootViewController属性访问�
 
 图2-4 容器和被呈现ViewController
 
-![](_image/【译】View Controller 编程指南（一、概述）/VCPG-container-and-presented-view-controller_2-4_2x.png)
+![](image/0/VCPG-container-and-presented-view-controller_2-4_2x.png)
 
 更多信息，请参考[The Presentation and Transition Process](https://developer.apple.com/library/content/featuredarticles/ViewControllerPGforiPhoneOS/PresentingaViewController.html#//apple_ref/doc/uid/TP40007457-CH14-SW7)章节。
 
@@ -111,6 +112,7 @@ root view controller可以通过UIWindow对象的rootViewController属性访问�
 很多系统ViewController被设计处理特定任务。有的ViewController被设计为访问用户数据，例如通讯录。有些可能用于访问硬件，或者为管理媒体提供特殊的调整界面。例如，UIKit中的UIImagePickerController可以展示一个标准的界面，用于捕获照片或视频，以及方位用户的相册【camera roll】。
 
 在你创建自定义ViewController之前，先看看系统库中是不是已经有了符合你需求的ViewController。
+
 - UIKit库提供了用于展示提示框、获取照片视频以及管理iCloud中文件的ViewController。UIKit还提供了很多标准的容器ViewController，你可以使用它们来组织内容。
 - GameKit库提供了匹配玩家、管理排行榜及其他游戏功能的ViewController。
 - Address Book UI库提供了展示和选择联系人信息的ViewController。
@@ -123,7 +125,7 @@ root view controller可以通过UIWindow对象的rootViewController属性访问�
 - Social库提供了为Twitter、Facebook以及其他社交媒体编写信息的ViewController。
 - AVFoundation库提供了展示媒体资源的ViewController。
 
-> 重要：不要修改系统提供的ViewController的view树。每个ViewController有自己的view树，并有责任保障它的完整性。修改系统ViewController可能会引入bug，产生预期外的问题。对于系统提供的ViewController，只能通过它公开的方法和属性来修改它。
+> **重要**：不要修改系统提供的ViewController的view树。每个ViewController有自己的view树，并有责任保障它的完整性。修改系统ViewController可能会引入bug，产生预期外的问题。对于系统提供的ViewController，只能通过它公开的方法和属性来修改它。
 
 更多使用特定ViewController的信息，请参考相关库的接口文档。
 
