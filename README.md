@@ -1,6 +1,14 @@
 # M7AppleDocTranslate
 
-#### 注
+#### 再新注
+- 极少翻译了
+- 主要用黑体、黑斜体甚至蓝链接标记重点
+
+#### 新注
+- 不再全文翻译
+- 只零星地翻译部分段落或句子，以作为笔记
+
+#### 旧注
 - 边读边译，翻译较生硬，也有没完全理解的地方
 - 大多数官档，网上有翻译的更好的，请参阅
 - 网上找不到的文档，可参阅本项目
@@ -43,5 +51,7 @@
 - [【译】View编程指南for iOS（一、概述）](doc/view-programming-guide-for-ios/view-programming-guide-for-ios.md)
 
 #### Core Animation 
-- [【译】Core Animation编程指南（1. 关于Core Animation）](doc/core-animation-programming-guide/core-animation-programming-guide-0.md)
-- [【译】Core Animation编程指南（2. Core Animation 基础知识）](doc/core-animation-programming-guide/core-animation-programming-guide-1.md)
+- [Core Animation Programming Guide 0](doc/core-animation-programming-guide/core-animation-programming-guide-0.md)
+- [Core Animation Programming Guide 1](doc/core-animation-programming-guide/core-animation-programming-guide-1.md)
+- [Core Animation Programming Guide 2](doc/core-animation-programming-guide/core-animation-programming-guide-2.md)
+- [Core Animation Programming Guide 3](doc/core-animation-programming-guide/core-animation-programming-guide-3.md)
