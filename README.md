@@ -41,3 +41,7 @@
 - [【译】View Controller 编程指南（二·一、定义ViewController之定义子类）](doc/【译】View Controller 编程指南（二·一、定义ViewController之定义子类）.md)
 - [【译】View Controller 编程指南（二·二、定义ViewController之实现容器ViewController）](doc/【译】View Controller 编程指南（二·二、定义ViewController之实现容器ViewController）.md)
 - [【译】View编程指南for iOS（一、概述）](doc/【译】View编程指南for iOS（一、概述）.md)
+
+#### Core Animation 
+- [【译】Core Animation编程指南（1. 关于Core Animation）](doc/core-animation-programming-guide/capg-0-about-core-animation.md)
+- [【译】Core Animation编程指南（2. Core Animation 基础知识）](doc/core-animation-programming-guide/capg-1-core-animation-basics.md)
