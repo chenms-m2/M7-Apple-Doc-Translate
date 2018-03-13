@@ -1,6 +1,8 @@
 # 关于Core Animation
 
-[原文：Core Animation Programming Guide - About Core Animation](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40004514-CH1-SW1)
+原文版本: 2015-03-09
+
+[原文](https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CoreAnimation_guide/Introduction/Introduction.html#//apple_ref/doc/uid/TP40004514-CH1-SW1)
 
 Core Animation（后文简称CA）是一个iOS/OSX平台上的图形渲染与动画框架【infrastructure】，你可以用它来对view或其他可见的元素（layer？）作动画。绘制动画每一帧时的大部分工作，CA都会为你处理。你通常只需要配置动画参数（例如开始点和结束点），然后告诉CA开始动画就可以了。CA会将实际的绘制工作交给图形硬件去加速渲染。这种自动图形加速可以生成高帧率平滑的动画，而不会加重CPU负担，不会拖慢你的app。
 
