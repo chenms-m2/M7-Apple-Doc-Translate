@@ -170,8 +170,9 @@ If you are implementing a custom layer class anyway, you can override the drawin
 
 When subclassing, you can use either of the following techniques to draw your layer’s content:
 
-Override the layer’s display method and use it to set the contents property of the layer directly.
-Override the layer’s drawInContext: method and use it to draw into the provided graphics context.
+- Override the layer’s display method and use it to set the contents property of the layer directly.
+- Override the layer’s drawInContext: method and use it to draw into the provided graphics context.
+
 Which method you override depends on how much control you need over the drawing process. The display method is the main entry point for updating the layer’s contents, so overriding that method puts you in complete control of the process. Overriding the display method also means that you are responsible for creating the CGImageRef to be assigned to the contents property. If you just want to draw content (or have your layer manage the drawing operation), you can override the drawInContext: method instead and let the layer create the backing store for you.
 
 ##### 调整你提供给layer的内容
